@@ -3,20 +3,10 @@
 
 import tweepy #https://github.com/tweepy/tweepy
 import csv
-
-#Twitter API credentials
-consumer_key = ""
-consumer_secret = ""
-access_key = ""
-access_secret = ""
-
-consumer_key = "t1S4U7WiHxiRwje99pGrInIpG"
-consumer_secret = "ItGMAIpAFftFlgdnVa7nPC23Xt3KDnbJfWloeOWKvZp2ad0DKL"
-access_token = "819047201854857216-gVCJEqmUGQMyBsYQ0iolLgCjqKZdyEo"
-access_token_secret = "rvvBR5bQ9OJ9VLUKaVRlcAax7OotjXwbZhm6Jag4HqSMB"
+from sauce import *
 
 def get_tweet_set(screen_name):
-	#Twitter only allows access to a users most recent 3240 tweets with this method
+	#Twitter only allows access to a users most recent 3240 tweets
 	
 	#authorize twitter, initialize tweepy
 	auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
