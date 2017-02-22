@@ -3,7 +3,7 @@
 
 import tweepy #https://github.com/tweepy/tweepy
 import csv
-from sauce import *
+from sauce import * #file with personal credentials for using API
 
 def get_tweet_set(screen_name):
 	#Twitter only allows access to a users most recent 3240 tweets
@@ -13,20 +13,9 @@ def get_tweet_set(screen_name):
 	auth.set_access_token(access_key, access_secret)
 	api = tweepy.API(auth)
 	
-	#initialize a list to hold all the tweepy Tweets
-	alltweets = []	
-	
-	#make initial request for most recent tweets (200 is the maximum allowed count)
+	alltweets = []		
 	new_tweets = api.user_timeline(screen_name = screen_name,count=10)
-	
-	#save most recent tweets
 	alltweets.extend(new_tweets)
-	
-	#save the id of the oldest tweet less one
-	#oldest = alltweets[-1].id - 1
-	
-	#keep grabbing tweets until there are no tweets left to grab
-
 	
 	#transform the tweepy tweets into a 2D array that will populate the csv	
 	outtweets = [['@', screen_name, tweet.text.encode("utf-8")] for tweet in alltweets]
@@ -34,7 +23,7 @@ def get_tweet_set(screen_name):
 	#write the csv	
 	with open('tweets.csv', 'a') as f:
 		writer = csv.writer(f)
-		writer.writerow(["id","created_at","text"])
+		writer.writerow(["name","text"])
 		writer.writerows(outtweets)
 	
 	pass
