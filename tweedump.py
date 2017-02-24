@@ -20,10 +20,10 @@ def get_tweet_set(screen_name):
 	#transform the tweepy tweets into a 2D array that will populate the csv	
 	outtweets = [['@', screen_name, tweet.text.encode("utf-8")] for tweet in alltweets]
 	
-	#write the csv	
+	#write the csv, append	
 	with open('tweets.csv', 'a') as f:
 		writer = csv.writer(f)
-		writer.writerow(["name","text"])
+		writer.writerow(['name','text'])
 		writer.writerows(outtweets)
 	
 	pass
