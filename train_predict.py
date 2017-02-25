@@ -37,6 +37,9 @@ def separateByClass(tweets):
 			separated[vector[i]]= separated[vector[i]]+ 1
 	return separated
 
+def posfraction(dataset, good):
+	vector = dataset.split()
+	return 88
 # main function
 if __name__ == '__main__':
 
@@ -45,14 +48,20 @@ if __name__ == '__main__':
 	politics = loadCsv("politics.csv")
 	celebs = loadCsv("celebs.csv")
 	sports = loadCsv("sports.csv")
+	#manymore = loadCsv("tweets.csv")
 
 	splitRatio = 0.5
 	train, copy = splitDataset(news, splitRatio)
+	#train = train.replace('the', '')
 	#print(train)
 
-	i = 0
-	separate = separateByClass(train)
-	print(separate)
+	#separate = separateByClass(train)
+	good= ['good', 'happy','nice','super','delightful', 'like']
+
+	goodfraction = posfraction(train, good)
+	print(goodfraction)
+
+	#print(max(separate, key=separate.get))
 	
 
 
