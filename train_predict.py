@@ -21,7 +21,8 @@ def splitDataset(dataset, splitRatio):
 		i=i+1
 	return [trainSet, copy]
 
-def separateByClass(tweets):
+def separateByClass(tweets, emotion):
+	summary=0
 	separated = {}
 	for dataset in tweets:
 		vector = ();
@@ -32,14 +33,11 @@ def separateByClass(tweets):
 
 		for i in range(len(vector)):
 			#vector = dataset[i].split()
-			if (vector[i] not in separated):
-				separated[vector[i]] = 0
-			separated[vector[i]]= separated[vector[i]]+ 1
-	return separated
+			if (vector[i] in emotion):
+				summary +=1
+	return summary
 
-def posfraction(dataset, good):
-	vector = dataset.split()
-	return 88
+
 # main function
 if __name__ == '__main__':
 
@@ -56,10 +54,28 @@ if __name__ == '__main__':
 	#print(train)
 
 	#separate = separateByClass(train)
-	good= ['good', 'happy','nice','super','delightful', 'like']
-
-	goodfraction = posfraction(train, good)
-	print(goodfraction)
+	good = ['good', 'happy','nice','super','delightful', 'like', 'inspiring']
+	political = ['many', 'local', 'professional', 'most', 'american', 
+	'few', 'prominent', 'conservative', 'british', 'democratic', 
+	'corrupt', 'southern', 'liberal', 'republican', 'practical', 'french', 
+	'national', 'indian', 'civilian','white', 'black', 'english', 
+	'ambitious', 'individual', 'influential', 'powerful', 'senior', 
+	'western', 'wing', 'northern', 'german', 'irish', 'successful', 
+	'unscrupulous', 'japanese', 'african', 'male', 'european','active', 
+	'radical', 'female', 'whig', 'moderate', 'contemporary', 'canadian', 
+	'bourgeois', 'top', 'federal', 'provincial', 'minded', 'astute', 
+	'crooked', 'muslim', 'russian', 'mexican', 'italian', 'experienced', 
+	'seeking', 'progressive', 'petty', 'rival', 'west', 'younger', 'time',
+	'responsible', 'eminent', 'israeli', 'colonial', 'able', 'known', 
+	'communist', 'socialist', 'class', 'regional', 'mainstream', 
+	#shrewd, greek, australian 
+	
+	#numGood = separateByClass(train, good)
+	#print(numGood)
+	print(separateByClass(news, political))
+	print(separateByClass(politics, political))
+	print(separateByClass(sports, political))
+	print(separateByClass(celebs, political))
 
 	#print(max(separate, key=separate.get))
 	
