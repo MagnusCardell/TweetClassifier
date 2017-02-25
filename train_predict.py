@@ -1,7 +1,7 @@
 import random
 import csv
 
-# opens .csv file and reads single tweets into arrays
+# opens .csv file and reads many tweets into arrays of individual tweets
 def loadCsv(filename):
 	lines = csv.reader(open(filename, "rb"))
 	dataset = list(lines)
@@ -9,7 +9,7 @@ def loadCsv(filename):
 		dataset[i] = [x for x in dataset[i]]
 	return dataset
 
-# split tweets into training and test sets
+# split tweets into training and test sets by ratio given my splitratio
 def splitDataset(dataset, splitRatio):
 	trainSize = int(len(dataset) * splitRatio)
 	trainSet = []
@@ -18,10 +18,11 @@ def splitDataset(dataset, splitRatio):
 	while i < trainSize:
 		trainSet.append(copy[i])
 		copy.pop(i)
-		i=i+1
+		i+=1
 	return [trainSet, copy]
 
-def separateByClass(tweets, emotion):
+# checks relevant wordfrequency in tweets
+def separateByClass(tweets, wordlist):
 	summary=0
 	separated = {}
 	for dataset in tweets:
@@ -33,49 +34,41 @@ def separateByClass(tweets, emotion):
 
 		for i in range(len(vector)):
 			#vector = dataset[i].split()
-			if (vector[i] in emotion):
+			if (vector[i] in wordlist):
 				summary +=1
+				print(vector[i])
 	return summary
 
 
 # main function
 if __name__ == '__main__':
+	topics = ['news','politics','celebs','sports']
+	for topic in topics:
+		tweets = loadCsv(topic+".csv")
+		splitRatio = 0.5
+		train, copy = splitDataset(tweets, splitRatio)
+		#inport all related adjectives and do comparison.
+		lines = csv.reader(open("related_"+topic+".csv", "rb"))
+		for a in lines:
+			wordlist = a
+		frequency = separateByClass(train, wordlist)
+		print(topic)
+		print(frequency)
 
-	test = ['1','2','3','4','3','2','3','1','2']
-	news = loadCsv("news.csv")
-	politics = loadCsv("politics.csv")
-	celebs = loadCsv("celebs.csv")
-	sports = loadCsv("sports.csv")
+
+	# print(separateByClass(politics, political))
+	# print(separateByClass(sports, political))
+	# print(separateByClass(celebs, political))
+
+
+#RETIREMENT functions
+
+# politics = loadCsv("politics.csv")
+# 	celebs = loadCsv("celebs.csv")
+# 	sports = loadCsv("sports.csv")
+
+#	test = ['1','2','3','4','3','2','3','1','2']
 	#manymore = loadCsv("tweets.csv")
-
-	splitRatio = 0.5
-	train, copy = splitDataset(news, splitRatio)
-	#train = train.replace('the', '')
-	#print(train)
-
-	#separate = separateByClass(train)
-	good = ['good', 'happy','nice','super','delightful', 'like', 'inspiring']
-	political = ['many', 'local', 'professional', 'most', 'american', 
-	'few', 'prominent', 'conservative', 'british', 'democratic', 
-	'corrupt', 'southern', 'liberal', 'republican', 'practical', 'french', 
-	'national', 'indian', 'civilian','white', 'black', 'english', 
-	'ambitious', 'individual', 'influential', 'powerful', 'senior', 
-	'western', 'wing', 'northern', 'german', 'irish', 'successful', 
-	'unscrupulous', 'japanese', 'african', 'male', 'european','active', 
-	'radical', 'female', 'whig', 'moderate', 'contemporary', 'canadian', 
-	'bourgeois', 'top', 'federal', 'provincial', 'minded', 'astute', 
-	'crooked', 'muslim', 'russian', 'mexican', 'italian', 'experienced', 
-	'seeking', 'progressive', 'petty', 'rival', 'west', 'younger', 'time',
-	'responsible', 'eminent', 'israeli', 'colonial', 'able', 'known', 
-	'communist', 'socialist', 'class', 'regional', 'mainstream', 
-	#shrewd, greek, australian 
-	
-	#numGood = separateByClass(train, good)
-	#print(numGood)
-	print(separateByClass(news, political))
-	print(separateByClass(politics, political))
-	print(separateByClass(sports, political))
-	print(separateByClass(celebs, political))
 
 	#print(max(separate, key=separate.get))
 	
