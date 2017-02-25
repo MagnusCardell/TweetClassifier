@@ -21,6 +21,22 @@ def splitDataset(dataset, splitRatio):
 		i+=1
 	return [trainSet, copy]
 
+# opens csv file of words and return list
+def getwords(topics):
+	lines = csv.reader(open("related_"+topics[0]+".csv", "rb"))
+	for a in lines:
+		p_words = a
+	lines = csv.reader(open("related_"+topics[1]+".csv", "rb"))
+	for a in lines:
+		n_words = a
+	lines = csv.reader(open("related_"+topics[2]+".csv", "rb"))
+	for a in lines:
+		c_words = a
+	lines = csv.reader(open("related_"+topics[3]+".csv", "rb"))
+	for a in lines:
+		s_words = a
+	return p_words,n_words,c_words,s_words
+
 # checks relevant wordfrequency in tweets
 def separateByClass(tweets, wordlist):
 	summary=0
@@ -29,31 +45,26 @@ def separateByClass(tweets, wordlist):
 		vector = ();
 		for i in range(len(dataset)):
 			vector = vector + tuple(dataset[i].split())
-		#print(len(vector))
-		#print(vector)
-
 		for i in range(len(vector)):
-			#vector = dataset[i].split()
-			if (vector[i] in wordlist):
+			if (vector[i].lower() in wordlist):
 				summary +=1
-				print(vector[i])
 	return summary
 
 
 # main function
 if __name__ == '__main__':
 	topics = ['news','politics','celebs','sports']
+	p_words,n_words,c_words,s_words = getwords(topics)
+	words = [p_words,n_words, c_words,s_words]
 	for topic in topics:
 		tweets = loadCsv(topic+".csv")
 		splitRatio = 0.5
 		train, copy = splitDataset(tweets, splitRatio)
 		#inport all related adjectives and do comparison.
-		lines = csv.reader(open("related_"+topic+".csv", "rb"))
-		for a in lines:
-			wordlist = a
-		frequency = separateByClass(train, wordlist)
-		print(topic)
-		print(frequency)
+		for a in words:
+			frequency = separateByClass(train, a)
+			print(topic)
+			print(frequency)
 
 
 	# print(separateByClass(politics, political))
