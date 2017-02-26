@@ -1,9 +1,9 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
+# encoding: utf-8
 import csv
 
-# opens .csv file and reads many tweets into arrays of individual tweets
-def loadfile(filename):
+# opens text file of words and save them into arrays
+def loadwords(filename):
 	with open(filename) as f:
 		for lines in f.readlines():
 			bag = [lines.split()]
@@ -18,20 +18,19 @@ def loadfile(filename):
 				celebbag = lines
 			else:
 				print('Error: unrecognized category')
-
 	return polbag,newsbag,celebbag,sportbag
 
-def loadcsv(filename):
-	lines = csv.reader(open(filename, "rb"))
-	dataset = list(lines)
-	for i in range(len(dataset)):
-		dataset[i] = [x for x in dataset[i]]
-		dataset[i] = formattweet(dataset[i])
-	return dataset
+def loadfile(filename):
+	with open(filename) as f:
+		tweets= []
+		for lines in f.readlines():
+			tweet = formattweet(lines.split())
+			tweets.append(tweet)
+		return tweets
 
 #remove unwanted words and formatting
 def formattweet(dataset):
-	datalist = [w.strip(".:,-'!?´") for s in dataset for w in s.split()]
+	datalist = [w.strip(".:,-'()!?´").replace('"','').lower()  for s in dataset for w in s.split()]
 	remove = ['what','who','is','a','as','at','is','he', 'i','for',
 		'then','they','that','this','one','two','three','four','five','six',
 		'seven','eight','nine','ten','to','be','want',"its's",
@@ -42,26 +41,25 @@ def formattweet(dataset):
 		'whilst','than',"they're",'and',"they're",'were''its',
 		'if','was',"won't","where's",'an',"isn't"]
 	form  = [word for word in datalist if word.lower() not in remove]
-	result = [" ".join(form)]
-	return result
+	return form
 
 # split tweets into training and test sets by ratio given my splitratio
-def splitDataset(dataset, splitRatio):
-	trainSize = int(len(dataset) * splitRatio)
+def splitDataset(dataset, splitratio):
+	trainsize = int(len(dataset) * splitratio)
+
 	training = []
-	testing = list(dataset)
-	i = 0
-	while i < trainSize:
-		training.append(testing[i])
-		testing.pop(i)
-		i+=1
+	testing = dataset
+	i=0
+	for i in range(trainsize):
+		training.append(dataset[i])
+	for n in range(i+1):
+		testing.pop(0)
 	return training, testing
 
-# checks relevant wordfrequency in tweets
 def separateByClass(tweets, baglist):
 	summary=0
+	num=0
 	wordlist = baglist.split(',')
-	separated = {}
 	for dataset in tweets:
 		vector = ();
 		for i in range(len(dataset)):
@@ -69,18 +67,28 @@ def separateByClass(tweets, baglist):
 		for i in range(len(vector)):
 			if (vector[i].lower() in wordlist):
 				summary +=1
-	return summary
+			num+=1
+	return summary,num
 
-# main function
+
 if __name__ == '__main__':
 	topics = ['news','politics','celebs','sports']
-	polybag,newsbag,celebbag,sportbag = loadfile('bag.txt')
+	testlist = []
 	for topic in topics:
-		tweets = loadcsv(topic+".csv")
-		splitRatio = 0.5
-		training, testing = splitDataset(tweets, splitRatio)
-		#inport all related adjectives and do comparison.
-		
-		print"Prior Probability Table: \t P(Yes)",totalyes,"/",totallength
-		print("News: \t Yes \t No" )
-		print "\nNews \t",newsfreq,"\t tota"
+		tweets = loadfile(topic+".txt")
+		training, test = splitDataset(tweets, 0.8s)
+		polybag,newsbag,celebbag,sportbag = loadwords('bag.txt')
+		politicfreq,num = separateByClass(training, polybag)
+		newsfreq,num = separateByClass(training, newsbag)
+		celebfreq,num = separateByClass(training, celebbag)
+		sportsfreq,num = separateByClass(training, sportbag)
+		totalyes = politicfreq+newsfreq+celebfreq+sportsfreq
+		print "Prior Probabilities: P(yes)= ",totalyes,'/',num,"P(no)= ",num-totalyes,'/',num
+		print topic,"\t Yes\tNo"
+		print polybag[1],"\t",politicfreq,'/',totalyes,"\t", totalyes-politicfreq,'/',totalyes
+		print newsbag[1],"\t",newsfreq,'/',totalyes,"\t", totalyes-newsfreq,'/',totalyes
+		print celebbag[1],"\t",celebfreq,'/',totalyes,"\t", totalyes-celebfreq,'/',totalyes
+		print sportbag[1],"\t",sportsfreq,'/',totalyes,"\t", totalyes-sportsfreq,'/',totalyes
+
+	#for tweet in test:
+	#	print(tweet)
