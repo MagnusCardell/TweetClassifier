@@ -148,7 +148,7 @@ if __name__ == '__main__':
 			print("P(celebrity)= ",celebprob*100,'%')
 			print("P(sports)= ",sportsprob*100,'%\n')
 
-	print("Post test P(yes)= ",newsumsetyes,'/',newsumset,"P(no)= ",newsumset-newsumsetyes,'/',sumset)
+	print("Post test P(yes)= ",newsumsetyes,'/',newsumset,"P(no)= ",newsumset-newsumsetyes,'/',newsumset)
 	print(topic,"\t Yes\t\tNo")
 	print(polybag[1],"\t",totalp,'/',newsumsetyes,"\t", newsumsetyes-totalp,'/',newsumsetyes)
 	print(newsbag[1],"\t",totaln,'/',newsumsetyes,"\t", newsumsetyes-totaln,'/',newsumsetyes)
@@ -161,4 +161,4 @@ if __name__ == '__main__':
 	print("P(political)\t", round(((priorp/prioryes)*(prioryes/priorsumset)),4),"\t",round((totalp/prioryes)*newprobyes,4))
 	print("P(news) \t", round(((priorn/prioryes)*(prioryes/priorsumset)),4),"\t",round((totaln/prioryes)*newprobyes,4))
 	print("P(celeb)\t", round(((priorc/prioryes)*(prioryes/priorsumset)),4),"\t",round((totalc/prioryes)*newprobyes,4))
-	print("P(sports)\t", round(((priors/prioryes)*(prioryes/priorsumset)),4),"\t",round((totals/prioryes)*newprobyes,4))
+	print("P(sports)\t", round(((priors/prioryes)*(prioryes/priorsumset)),4),"\t\t",round((totals/prioryes)*newprobyes,4))
