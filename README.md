@@ -20,5 +20,4 @@ P(b|a)=P(a|b)P(a)
 # **Design**
 
 ![Data Flowchart](/images/flowchart.png)
-Format: ![Alt Text](url)
 
